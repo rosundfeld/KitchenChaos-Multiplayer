@@ -14,21 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentVersion: 1.01
   subtype: kitchenchaos
-  lastShownTimestamp: 1786037018
+  lastShownTimestamp: 1787486251
   lastUpdateResponse:
     version: 1.01
     versionUrl: https://unitycodemonkey.com
-  checkedLastUpdateTimestamp: 1786037018
+  checkedLastUpdateTimestamp: 1787486252
   lastQOTDResponse:
-    questionId: 329
-    questionText: What is the main difference between the out and ref keywords? (behaviour
-      inside the function)
-    answerA: out doesn't need to be set; ref MUST be set
-    answerB: out MUST be set; ref doesn't need to be set
-    answerC: No difference
+    questionId: 335
+    questionText: What is the difference between Application.dataPath and Application.persistentDataPath
+      on Windows?
+    answerA: No difference on Windows
+    answerB: Application.dataPath is the install folder and Application.persistentDataPath
+      is on the Registry
+    answerC: Application.dataPath is the install folder and Application.persistentDataPath
+      is on the User Data
     answerD: 
     answerE: 
-  lastQotdTimestamp: 1786037018
+  lastQotdTimestamp: 1787486252
   lastDynamicHeaderResponse:
     topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/summer2025CodeMonkeyBundle_EndsSoon.png
     topText: Get 80% OFF on ALL my Courses and Games!!! (ENDS AUGUST)
@@ -36,19 +38,20 @@ MonoBehaviour:
     bottomText: DONT MISS the latest important trends, sign up for my FREE Weekly
       Newsletter!
     bottomLink: gamedevreport
-  lastDynamicHeaderTimestamp: 1786037018
+  lastDynamicHeaderTimestamp: 1787486252
   websiteLatestMessage:
     text: <a href="https://cmonkey.co/freecourses">Check out all my FREE courses!
       Click here!</a>
-  websiteLatestMessageTimestamp: 1786037018
+  websiteLatestMessageTimestamp: 1787486252
   websiteLatestVideos:
     videos:
-    - youTubeId: 2oHitHMNyNw
-      title: WHY Scope Creep DESTROYS Indie Games (and how to stop it)
-    - youTubeId: -1yYVVVN4as
-      title: BEST NEW Visual Assets to INSPIRE YOU! (JULY 2026)
-    - youTubeId: f0BSrBhudoY
-      title: TOP 10 NEW Systems and Tools JULY 2026! | Unity Asset Store
-    - youTubeId: _0Lp-iXEhfU
-      title: Join my Game Dev Practice Lab for FREE!
-  websiteLatestVideosTimestamp: 1786037018
+    - youTubeId: 2QKVo8m5ozQ
+      title: The MYTH of the Overnight Game Success! ($10 mil DOESN'T happen like
+        that)
+    - youTubeId: VZCaQSzsGwU
+      title: TOP 10 FREE NEW Assets AUGUST 2026!
+    - youTubeId: Hwpbh2fDPlE
+      title: The SECRET WEAPON making Unity 7 AWESOME - CoreCLR Explained
+    - youTubeId: xsQTCKSHte8
+      title: TOP 10 NEW Games, Made with Unity! (JULY 2026)
+  websiteLatestVideosTimestamp: 1787486252
