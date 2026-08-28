@@ -30,15 +30,15 @@ public class SoundManager : MonoBehaviour
         CuttingCounter.OnAnyCut += CuttingCounter_OnAnyCut;
         ContainerCounter.OnAnyObjectGrabbed += ContainerCounter_OnAnyObjectGrabbed;
         TrashCounter.OnAnyObjectTrashed += TrashCounter_OnAnyObjectTrashed;
-        Player.Instance.OnPickedSomething += Player_OnPickedSomething;
+        //Player.Instance.OnPickedSomething += Player_OnPickedSomething;
         BaseCounter.OnAnyObjectPlacedHere += BaseCounter_OnAnyObjectPlacedHere;
     }
 
     //------------------------------Player Events---------------------------------
     private void Player_OnPickedSomething(object sender, System.EventArgs e)
     {
-        Player player = sender as Player;
-        PlaySound(audioClipRefsSO.objectPickup, player.transform.position);
+        //Player player = sender as Player;
+        //PlaySound(audioClipRefsSO.objectPickup, player.transform.position);
     }
     //------------------------------BaseCounter Events---------------------------------
     private void BaseCounter_OnAnyObjectPlacedHere(object sender, System.EventArgs e)

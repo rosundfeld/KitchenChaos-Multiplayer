@@ -1,24 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 using System;
 
-public class Player : MonoBehaviour, IKitchenObjectParent
+public class Player : NetworkBehaviour, IKitchenObjectParent
 {
     //---------------SINGLETON-----------------
-    public static Player Instance { get; private set; }
+    //public static Player Instance { get; private set; }
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Debug.LogWarning("Multiple instances of Player detected. Destroying duplicate.");
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
+        //if (Instance != null && Instance != this)
+        //{
+        //    Debug.LogWarning("Multiple instances of Player detected. Destroying duplicate.");
+        //    Destroy(gameObject);
+        //}
+        //else
+        //{
+        //    Instance = this;
+        //}
     }
     //---------------EVENTS-----------------
     public event EventHandler OnPickedSomething;
@@ -32,7 +33,6 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     //---------------FIELDS-----------------
     [SerializeField] private float moveSpeed = 7f;
 
-    [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask countersLayerMask;
     [SerializeField] private Transform kitchenObjectHoldPoint;
 
@@ -46,8 +46,8 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void Start()
     {
-        gameInput.OnInteractAction += GameInput_OnInteractAction;
-        gameInput.OnInteractAlternateAction += GameInput_OnInteractAlternateAction;
+        GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
+        GameInput.Instance.OnInteractAlternateAction += GameInput_OnInteractAlternateAction;
     }
 
     private void GameInput_OnInteractAction(object sender, System.EventArgs e)
@@ -72,13 +72,18 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void Update()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+
         HandleMovement();
         HandleInteractions();
     }
 
     private void HandleInteractions()
     {
-        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+        Vector2 inputVector = GameInput.Instance.GetMovementVectorNormalized();
 
         Vector3 moveDirection = new Vector3(inputVector.x, 0, inputVector.y);
 
@@ -96,6 +101,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
                 //Use ao invés de Tags (TryGetComponent) para não precisar ficar criando tags e ficar mais organizado, além de ser mais performático além de já tratar do Null 
                 if (baseCounter != selectedCounter)
                 {
+                     Debug.Log("Selected counter changed to: " + baseCounter.name);
                     SetSelectedCounter(baseCounter);
                 }
             }
@@ -118,7 +124,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void HandleMovement()
     {
-        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+        Vector2 inputVector = GameInput.Instance.GetMovementVectorNormalized();
 
         Vector3 moveDirection = new Vector3(inputVector.x, 0, inputVector.y);
 
