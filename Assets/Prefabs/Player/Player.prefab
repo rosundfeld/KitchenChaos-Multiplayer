@@ -85,7 +85,7 @@ MonoBehaviour:
   moveSpeed: 9
   countersLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   kitchenObjectHoldPoint: {fileID: 1166858164641074374}
 --- !u!114 &9110952410123325375
 MonoBehaviour:

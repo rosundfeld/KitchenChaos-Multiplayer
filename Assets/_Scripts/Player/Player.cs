@@ -6,20 +6,19 @@ using System;
 
 public class Player : NetworkBehaviour, IKitchenObjectParent
 {
-    //---------------SINGLETON-----------------
-    //public static Player Instance { get; private set; }
 
-    private void Awake()
+    public static event EventHandler OnAnyPlayerSpawned;
+    public static event EventHandler OnAnyPickedSomething;
+    //---------------SINGLETON NETCODE-----------------
+    public static Player LocalInstance { get; private set; }
+
+    public override void OnNetworkSpawn()
     {
-        //if (Instance != null && Instance != this)
-        //{
-        //    Debug.LogWarning("Multiple instances of Player detected. Destroying duplicate.");
-        //    Destroy(gameObject);
-        //}
-        //else
-        //{
-        //    Instance = this;
-        //}
+        if (IsOwner)
+        {
+            LocalInstance = this;
+        }
+        OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
     }
     //---------------EVENTS-----------------
     public event EventHandler OnPickedSomething;
@@ -56,6 +55,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
             return;
         if (selectedCounter != null)
         {
+            Debug.Log("Interacting with counter: " + selectedCounter.name);
             selectedCounter.Interact(this);
         }
     }
@@ -96,12 +96,12 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
 
         if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycastHit, interactionDistance, countersLayerMask))
         {
+
             if (raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
             {
                 //Use ao invés de Tags (TryGetComponent) para não precisar ficar criando tags e ficar mais organizado, além de ser mais performático além de já tratar do Null 
                 if (baseCounter != selectedCounter)
                 {
-                     Debug.Log("Selected counter changed to: " + baseCounter.name);
                     SetSelectedCounter(baseCounter);
                 }
             }
@@ -191,6 +191,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
         if (kitchenObject != null)
         {
             OnPickedSomething?.Invoke(this, EventArgs.Empty);
+            OnAnyPickedSomething?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -207,5 +208,15 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
     public bool HasKitchenObject()
     {
         return kitchenObject != null;
+    }
+
+    public static void ResetStaticData()
+    {
+        OnAnyPlayerSpawned = null;
+    }
+
+    public NetworkObject GetNetworkObject()
+    {
+        return NetworkObject;
     }
 }
