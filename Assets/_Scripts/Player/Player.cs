@@ -12,14 +12,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
     //---------------SINGLETON NETCODE-----------------
     public static Player LocalInstance { get; private set; }
 
-    public override void OnNetworkSpawn()
-    {
-        if (IsOwner)
-        {
-            LocalInstance = this;
-        }
-        OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
-    }
+   
     //---------------EVENTS-----------------
     public event EventHandler OnPickedSomething;
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
@@ -33,7 +26,9 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
     [SerializeField] private float moveSpeed = 7f;
 
     [SerializeField] private LayerMask countersLayerMask;
+    [SerializeField] private LayerMask collisionsLayerMask;
     [SerializeField] private Transform kitchenObjectHoldPoint;
+    [SerializeField] private List<Vector3> spawnPositionList;
 
     //---------------PRIVATE VARIABLES-----------------
     private KitchenObject kitchenObject;
@@ -42,6 +37,18 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
     private BaseCounter selectedCounter;
 
     //---------------UNITY METHODS-----------------
+
+     public override void OnNetworkSpawn()
+    {
+        if (IsOwner)
+        {
+            LocalInstance = this;
+        }
+
+        transform.position = spawnPositionList[(int)OwnerClientId];
+
+        OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
+    }
 
     private void Start()
     {
@@ -130,14 +137,14 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
 
         float moveDistance = moveSpeed * Time.deltaTime;
         float playerRadius = 0.7f;
-        float playerHeight = 2f;
-        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirection, moveDistance); //RAYCAST PARA ANDAR, MTO MELHOR QUE COLLIDER
+
+        bool canMove = !Physics.BoxCast(transform.position, Vector3.one * playerRadius, moveDirection, Quaternion.identity, moveDistance, collisionsLayerMask); //RAYCAST PARA ANDAR, MTO MELHOR QUE COLLIDER
 
         if (!canMove)
         {
             //Cannot move towards moveDirection, try to move only on the X axis
             Vector3 moveDirectionX = new Vector3(moveDirection.x, 0, 0).normalized;
-            canMove = (moveDirectionX.x < -.5f || moveDirectionX.x > .5f) && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirectionX, moveDistance);
+            canMove = (moveDirectionX.x < -.5f || moveDirectionX.x > .5f) && !Physics.BoxCast(transform.position, Vector3.one * playerRadius, moveDirectionX, Quaternion.identity, moveDistance, collisionsLayerMask);
             if (canMove)
             {
                 moveDirection = moveDirectionX;
@@ -146,7 +153,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
             {
                 //Cannot move on X axis, try to move only on the Z axis
                 Vector3 moveDirectionZ = new Vector3(0, 0, moveDirection.z).normalized;
-                canMove = (moveDirectionZ.z < -.5f || moveDirectionZ.z > .5f) && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirectionZ, moveDistance);
+                canMove = (moveDirectionZ.z < -.5f || moveDirectionZ.z > .5f) && !Physics.BoxCast(transform.position, Vector3.one * playerRadius, moveDirectionZ, Quaternion.identity, moveDistance, collisionsLayerMask);
                 if (canMove)
                 {
                     moveDirection = moveDirectionZ;

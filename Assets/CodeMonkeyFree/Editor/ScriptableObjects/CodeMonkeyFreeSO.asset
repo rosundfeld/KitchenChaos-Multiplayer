@@ -14,41 +14,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentVersion: 1.01
   subtype: kitchenchaos
-  lastShownTimestamp: 1788169134
+  lastShownTimestamp: 1788603625
   lastUpdateResponse:
     version: 1.01
     versionUrl: https://unitycodemonkey.com
-  checkedLastUpdateTimestamp: 1788169134
+  checkedLastUpdateTimestamp: 1788603625
   lastQOTDResponse:
-    questionId: 337
-    questionText: Which namespace do we need to use File.WriteAllText()?
-    answerA: using System;
-    answerB: using UnityEngine;
-    answerC: using System.IO;
-    answerD: using UnityEngine.UI;
+    questionId: 339
+    questionText: What is the correct way to show a variable in the Editor?
+    answerA: public int health;
+    answerB: public static int health;
+    answerC: '[SerializeField] private int health;'
+    answerD: private int health;
     answerE: 
-  lastQotdTimestamp: 1788169134
+  lastQotdTimestamp: 1788603625
   lastDynamicHeaderResponse:
-    topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/summer2025CodeMonkeyBundle_EndsSoon.png
-    topText: Get 80% OFF on ALL my Courses and Games!!! (ENDS AUGUST)
-    topLink: summerbundle
-    bottomText: DONT MISS the latest important trends, sign up for my FREE Weekly
-      Newsletter!
-    bottomLink: gamedevreport
-  lastDynamicHeaderTimestamp: 1788169134
+    topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/humbleSep26Maksym.png
+    topText: AWESOME Characters and Weapons 98% OFF! (Modern, Medieval, Fantasy,
+      Sci-Fi, etc)
+    topLink: humblebundle
+    bottomText: Escape Tutorial Hell and level up your skills, try my Practice Lab
+      for FREE!
+    bottomLink: practicelab
+  lastDynamicHeaderTimestamp: 1788603625
   websiteLatestMessage:
     text: <a href="https://cmonkey.co/freecourses">Check out all my FREE courses!
       Click here!</a>
-  websiteLatestMessageTimestamp: 1788169134
+  websiteLatestMessageTimestamp: 1788603625
   websiteLatestVideos:
     videos:
+    - youTubeId: 8xj9IEFRgKo
+      title: THIS is how you go from BEGINNER to ADVANCED!
+    - youTubeId: XJBrzk7PR4o
+      title: DON'T sell your game for $100!
     - youTubeId: 2QKVo8m5ozQ
       title: The MYTH of the Overnight Game Success! ($10 mil DOESN'T happen like
         that)
     - youTubeId: VZCaQSzsGwU
       title: TOP 10 FREE NEW Assets AUGUST 2026!
-    - youTubeId: Hwpbh2fDPlE
-      title: The SECRET WEAPON making Unity 7 AWESOME - CoreCLR Explained
-    - youTubeId: xsQTCKSHte8
-      title: TOP 10 NEW Games, Made with Unity! (JULY 2026)
-  websiteLatestVideosTimestamp: 1788169134
+  websiteLatestVideosTimestamp: 1788603625
