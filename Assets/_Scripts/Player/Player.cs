@@ -12,7 +12,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
     //---------------SINGLETON NETCODE-----------------
     public static Player LocalInstance { get; private set; }
 
-   
+
     //---------------EVENTS-----------------
     public event EventHandler OnPickedSomething;
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
@@ -38,7 +38,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
 
     //---------------UNITY METHODS-----------------
 
-     public override void OnNetworkSpawn()
+    public override void OnNetworkSpawn()
     {
         if (IsOwner)
         {
@@ -48,6 +48,22 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
         transform.position = spawnPositionList[(int)OwnerClientId];
 
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
+
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+        }
+
+    }
+
+    private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
+    {
+
+        if (clientId == OwnerClientId && HasKitchenObject())
+        {
+            KitchenObject.DestroyKitchenObject(GetKitchenObject());
+        }
+
     }
 
     private void Start()

@@ -6,9 +6,10 @@ using UnityEngine.InputSystem;
 
 public class GameInput : MonoBehaviour
 {
-
+    //---------------CONSTANTS-----------------
     private const string PLAYER_PREFS_BINDINGS = "InputBindings";
 
+    //---------------ENUMS-----------------
     public enum Binding
     {
         Move_Up,
@@ -23,16 +24,19 @@ public class GameInput : MonoBehaviour
         Gamepad_Pause
     }
 
+    //---------------SINGLETON-----------------
     public static GameInput Instance { get; private set; }
 
-
+    //---------------EVENTS-----------------
     public event EventHandler OnInteractAction;
     public event EventHandler OnInteractAlternateAction;
     public event EventHandler OnPauseAction;
     public event EventHandler OnBindingRebind;
 
-
+    //---------------PRIVATE VARIABLES-----------------
     private PlayerInputActions playerInputActions;
+
+    //---------------UNITY METHODS-----------------
 
     private void Awake()
     {

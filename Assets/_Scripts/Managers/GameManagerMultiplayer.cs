@@ -5,14 +5,19 @@ using Unity.Netcode;
 
 public class GameManagerMultiplayer : NetworkBehaviour
 {
+    //---------------SINGLETON NETCODE-----------------
     public static GameManagerMultiplayer Instance { get; private set; }
 
+    //---------------FIELDS-----------------
     [SerializeField] private KitchenObjectListSO kitchenObjectListSO;
 
+    //---------------UNITY METHODS-----------------
     public void Awake()
     {
         Instance = this;
     }
+
+    //---------------MULTIPLAYER OBJECT SPAWNING-----------------
 
     public void SpawnKitchenObject(KitchenObjectSO kitchenObjectSO, IKitchenObjectParent kitchenObjectParent)
     {
@@ -36,6 +41,33 @@ public class GameManagerMultiplayer : NetworkBehaviour
         IKitchenObjectParent kitchenObjectParent = kitchenObjectParentNetworkObject.GetComponent<IKitchenObjectParent>();
 
         kitchenObject.SetKitchenObjectParent(kitchenObjectParent);
+    }
+
+    public void StartHost()
+    {
+        NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManager_ConnectionApprovalCallback;
+        NetworkManager.Singleton.StartHost();
+    }
+
+    private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
+    {
+        if(GameManager.Instance.IsWaitingToStart())
+        {
+            connectionApprovalResponse.Approved = true;
+            connectionApprovalResponse.CreatePlayerObject = true;
+            connectionApprovalResponse.PlayerPrefabHash = null;
+            connectionApprovalResponse.Pending = false;
+        } 
+        else
+        {
+            connectionApprovalResponse.Approved = false;
+            connectionApprovalResponse.Reason = "Game is already in progress!";
+        }
+    }
+
+    public void StartClient()
+    {
+        NetworkManager.Singleton.StartClient();
     }
 
     public int GetKitchenObjectSOIndex(KitchenObjectSO kitchenObjectSO)
@@ -69,7 +101,7 @@ public class GameManagerMultiplayer : NetworkBehaviour
     {
         kitchenObjectNetworkObjectReference.TryGet(out NetworkObject kitchenObjectNetworkObject);
         KitchenObject kitchenObject = kitchenObjectNetworkObject.GetComponent<KitchenObject>();
-        
+
         kitchenObject.ClearKitchenObjectFromParent();
     }
 }

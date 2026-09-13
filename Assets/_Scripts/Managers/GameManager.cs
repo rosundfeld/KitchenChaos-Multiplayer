@@ -6,13 +6,18 @@ using Unity.Netcode;
 
 public class GameManager : NetworkBehaviour
 {
-
+    //---------------SINGLETON NETCODE-----------------
     public static GameManager Instance { get; private set; }
 
+    //---------------EVENTS-----------------
     public event EventHandler OnStateChanged;
     public event EventHandler OnLocalGamePaused;
+    public event EventHandler OnMultiplayerGamePaused;
     public event EventHandler OnLocalGameUnpaused;
+    public event EventHandler OnMultiplayerGameUnpaused;
     public event EventHandler OnLocalPlayerReadyChanged;
+
+    //---------------ENUMS-----------------
     private enum State
     {
         WaitingToStart,
@@ -21,17 +26,20 @@ public class GameManager : NetworkBehaviour
         GameOver
     }
 
+    //---------------NETWORK VARIABLES-----------------
     private NetworkVariable<State> state = new NetworkVariable<State>(State.WaitingToStart);
+    private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(3f);
+    private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(0f);
+    private NetworkVariable<bool> isGamePaused = new NetworkVariable<bool>(false);
 
+    //---------------PRIVATE VARIABLES-----------------
     private Dictionary<ulong, bool> playerReadyDictionary;
     private Dictionary<ulong, bool> playerPausedDictionary;
     private bool isLocalPlayerReady;
-    private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(3f);
-    private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(0f);
     private float gamePlayingTimerMax = 90f;
+    private bool autoTestGamePausedState;
 
-    private bool isLocalGamePaused = false;
-    private NetworkVariable<bool> isGamePaused = new NetworkVariable<bool>(false);
+    //---------------UNITY METHODS-----------------
     private void Awake()
     {
         Instance = this;
@@ -50,19 +58,31 @@ public class GameManager : NetworkBehaviour
     {
         state.OnValueChanged += State_OnValueChanged;
         isGamePaused.OnValueChanged += IsGamePaused_OnValueChanged;
+
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+        }
     }
-    
+
+    private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
+    {
+        autoTestGamePausedState = true;
+    }
+
     private void IsGamePaused_OnValueChanged(bool previousValue, bool newValue)
     {
         if (isGamePaused.Value)
         {
             Time.timeScale = 0f;
-            OnLocalGamePaused?.Invoke(this, EventArgs.Empty);
+
+            OnMultiplayerGamePaused?.Invoke(this, EventArgs.Empty);
         }
         else
         {
             Time.timeScale = 1f;
-            OnLocalGameUnpaused?.Invoke(this, EventArgs.Empty);
+
+            OnMultiplayerGameUnpaused?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -94,7 +114,7 @@ public class GameManager : NetworkBehaviour
         bool allPlayersReady = true;
         foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
-            if (playerReadyDictionary.ContainsKey(clientId) || !playerReadyDictionary[clientId])
+            if (!playerReadyDictionary.ContainsKey(clientId) || !playerReadyDictionary[clientId])
             {
                 allPlayersReady = false;
                 break; // Exit the loop early since not all players are ready
@@ -110,6 +130,13 @@ public class GameManager : NetworkBehaviour
     private void GameInput_OnPauseAction(object sender, EventArgs e)
     {
         TogglePauseGame();
+    }
+
+    private void LateUpdate() {
+        if(autoTestGamePausedState) {
+            autoTestGamePausedState = false;
+            TestGamePauseState();
+        }
     }
 
     private void Update()
@@ -159,6 +186,11 @@ public class GameManager : NetworkBehaviour
     public bool IsGameOver()
     {
         return state.Value == State.GameOver;
+    }
+
+    public bool IsWaitingToStart()
+    {
+        return state.Value == State.WaitingToStart;
     }
 
     public bool IsLocalPlayerReady()

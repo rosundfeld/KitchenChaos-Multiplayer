@@ -6,22 +6,26 @@ using Unity.Netcode;
 
 public class DeliveryManager : NetworkBehaviour
 {
+    //---------------SINGLETON NETCODE-----------------
     public static DeliveryManager Instance { get; private set; }
+
+    //---------------EVENTS-----------------
     public event EventHandler OnRecipeSpawned;
     public event EventHandler OnRecipeCompleted;
     public event EventHandler OnRecipeSuccess;
     public event EventHandler OnRecipeFailed;
 
-
+    //---------------FIELDS-----------------
     [SerializeField] private RecipeListSO recipeListSO;
-    private List<RecipeSO> waitingRecipeSOList;
 
+    //---------------PRIVATE VARIABLES-----------------
+    private List<RecipeSO> waitingRecipeSOList;
     private float spawnRecipeTimer;
     private float spawnRecipeTimerMax = 4f;
     private int waitingRecipesMax = 4;
-
     private int successfulRecipesAmount;
 
+    //---------------UNITY METHODS-----------------
     private void Awake()
     {
         waitingRecipeSOList = new List<RecipeSO>();

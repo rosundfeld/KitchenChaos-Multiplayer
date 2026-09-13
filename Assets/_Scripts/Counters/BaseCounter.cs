@@ -6,15 +6,21 @@ using Unity.Netcode;
 
 public class BaseCounter : NetworkBehaviour, IKitchenObjectParent
 {
+    //---------------FIELDS-----------------
     [SerializeField] private Transform counterTopPoint;
+
+    //---------------EVENTS-----------------
     public static event EventHandler OnAnyObjectPlacedHere;
 
+    //---------------PRIVATE VARIABLES-----------------
+    private KitchenObject kitchenObject;
+
+    //---------------PUBLIC API-----------------
     public static void ResetStaticData()
     {
         OnAnyObjectPlacedHere = null;
     }
 
-    private KitchenObject kitchenObject;
     public virtual void Interact(Player player)
     {
         Debug.Log("BaseCounter Interact");

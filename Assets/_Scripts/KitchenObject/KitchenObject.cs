@@ -5,15 +5,20 @@ using Unity.Netcode;
 
 public class KitchenObject : NetworkBehaviour
 {
+    //---------------FIELDS-----------------
     [SerializeField] private KitchenObjectSO kitchenObjectSO;
 
+    //---------------PRIVATE VARIABLES-----------------
     private IKitchenObjectParent kitchenObjectParent;
     private FollowTransform followTransform;
 
+    //---------------UNITY METHODS-----------------
     protected virtual void Awake()
     {
         followTransform = GetComponent<FollowTransform>();
     }
+
+    //---------------PUBLIC API-----------------
 
     public KitchenObjectSO GetKitchenObjectSO()
     {

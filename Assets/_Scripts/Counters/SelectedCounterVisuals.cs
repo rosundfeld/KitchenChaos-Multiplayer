@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class SelectedCounterVisuals : MonoBehaviour
 {
-
+    //---------------FIELDS-----------------
     [SerializeField] private BaseCounter baseCounter;
     [SerializeField] private GameObject[] visualGameObjectArray;
+
+    //---------------UNITY METHODS-----------------
     private void Start()
     {
         if (Player.LocalInstance != null)

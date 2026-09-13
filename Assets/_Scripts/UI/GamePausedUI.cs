@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using Unity.Netcode;
 
 public class GamePausedUI : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class GamePausedUI : MonoBehaviour
 
         mainMenuButton.onClick.AddListener(() =>
         {
+            NetworkManager.Singleton.Shutdown();
             Loader.Load(Loader.Scene.MainMenuScene);
         });
 
