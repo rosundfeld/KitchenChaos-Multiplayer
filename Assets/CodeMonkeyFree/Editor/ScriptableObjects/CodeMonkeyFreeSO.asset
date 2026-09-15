@@ -14,44 +14,47 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentVersion: 1.01
   subtype: kitchenchaos
-  lastShownTimestamp: 1787486251
+  lastShownTimestamp: 1789385334
   lastUpdateResponse:
     version: 1.01
     versionUrl: https://unitycodemonkey.com
-  checkedLastUpdateTimestamp: 1787486252
+  checkedLastUpdateTimestamp: 1789385334
   lastQOTDResponse:
-    questionId: 335
-    questionText: What is the difference between Application.dataPath and Application.persistentDataPath
-      on Windows?
-    answerA: No difference on Windows
-    answerB: Application.dataPath is the install folder and Application.persistentDataPath
-      is on the Registry
-    answerC: Application.dataPath is the install folder and Application.persistentDataPath
-      is on the User Data
+    questionId: 342
+    questionText: 'What is the result of this code:
+
+      <p>int money = 2000000000;
+      // $2 billion</p>
+
+      <p>money += 1000000000; // Adding $1 billion</p>'
+    answerA: money == 3000000000
+    answerB: money == -1294967296
+    answerC: money == 0
     answerD: 
     answerE: 
-  lastQotdTimestamp: 1787486252
+  lastQotdTimestamp: 1789385334
   lastDynamicHeaderResponse:
-    topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/summer2025CodeMonkeyBundle_EndsSoon.png
-    topText: Get 80% OFF on ALL my Courses and Games!!! (ENDS AUGUST)
-    topLink: summerbundle
-    bottomText: DONT MISS the latest important trends, sign up for my FREE Weekly
-      Newsletter!
-    bottomLink: gamedevreport
-  lastDynamicHeaderTimestamp: 1787486252
+    topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/humbleSep26Maksym.png
+    topText: AWESOME Characters and Weapons 98% OFF! (Modern, Medieval, Fantasy,
+      Sci-Fi, etc)
+    topLink: humblebundle
+    bottomText: Escape Tutorial Hell and level up your skills, try my Practice Lab
+      for FREE!
+    bottomLink: practicelab
+  lastDynamicHeaderTimestamp: 1789385334
   websiteLatestMessage:
     text: <a href="https://cmonkey.co/freecourses">Check out all my FREE courses!
       Click here!</a>
-  websiteLatestMessageTimestamp: 1787486252
+  websiteLatestMessageTimestamp: 1789385334
   websiteLatestVideos:
     videos:
-    - youTubeId: 2QKVo8m5ozQ
-      title: The MYTH of the Overnight Game Success! ($10 mil DOESN'T happen like
-        that)
-    - youTubeId: VZCaQSzsGwU
-      title: TOP 10 FREE NEW Assets AUGUST 2026!
-    - youTubeId: Hwpbh2fDPlE
-      title: The SECRET WEAPON making Unity 7 AWESOME - CoreCLR Explained
-    - youTubeId: xsQTCKSHte8
-      title: TOP 10 NEW Games, Made with Unity! (JULY 2026)
-  websiteLatestVideosTimestamp: 1787486252
+    - youTubeId: QNXgOuo7-Iw
+      title: TOP 10 FREE NEW Assets SEPTEMBER 2026!
+    - youTubeId: xhOkkGbL3mY
+      title: How to Make your game look AWESOME! (Unity Lighting and Post Processing
+        Tutorial)
+    - youTubeId: HOm1VQLKhX8
+      title: Unity 6.6 is here and it has 3 MASSIVE IMPROVEMENTS!
+    - youTubeId: 8xj9IEFRgKo
+      title: THIS is how you go from BEGINNER to ADVANCED!
+  websiteLatestVideosTimestamp: 1789385334

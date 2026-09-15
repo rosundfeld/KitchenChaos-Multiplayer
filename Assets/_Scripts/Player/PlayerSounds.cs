@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class PlayerSounds : MonoBehaviour
 {
+    //---------------PRIVATE VARIABLES-----------------
     private Player player;
     private float footstepTimer;
     private float footstepTimerMax = 0.1f;
 
+    //---------------UNITY METHODS-----------------
     private void Awake()
     {
         player = GetComponent<Player>();
