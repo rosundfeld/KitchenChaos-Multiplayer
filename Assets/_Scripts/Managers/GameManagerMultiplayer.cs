@@ -2,19 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.SceneManagement;
+using System;
 
 public class GameManagerMultiplayer : NetworkBehaviour
 {
+    private const int MAX_PLAYER_AMOUNT = 4;
     //---------------SINGLETON NETCODE-----------------
     public static GameManagerMultiplayer Instance { get; private set; }
 
     //---------------FIELDS-----------------
     [SerializeField] private KitchenObjectListSO kitchenObjectListSO;
 
+    //---------------EVENTS-----------------
+    public event EventHandler OnTryingToJoinGame;
+    public event EventHandler FailedToJoinGame;
+
     //---------------UNITY METHODS-----------------
     public void Awake()
     {
         Instance = this;
+
+        DontDestroyOnLoad(gameObject);
     }
 
     //---------------MULTIPLAYER OBJECT SPAWNING-----------------
@@ -51,22 +60,26 @@ public class GameManagerMultiplayer : NetworkBehaviour
 
     private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
     {
-        if(GameManager.Instance.IsWaitingToStart())
-        {
-            connectionApprovalResponse.Approved = true;
-            connectionApprovalResponse.CreatePlayerObject = true;
-            connectionApprovalResponse.PlayerPrefabHash = null;
-            connectionApprovalResponse.Pending = false;
-        } 
-        else
+        if (SceneManager.GetActiveScene().name != Loader.Scene.CharacterSelectionScene.ToString())
         {
             connectionApprovalResponse.Approved = false;
             connectionApprovalResponse.Reason = "Game is already in progress!";
+            return;
         }
+        if(NetworkManager.Singleton.ConnectedClientsIds.Count >= MAX_PLAYER_AMOUNT)
+        {
+            connectionApprovalResponse.Approved = false;
+            connectionApprovalResponse.Reason = "Maximum player amount reached!";
+            return;
+        }
+        connectionApprovalResponse.Approved = true;
     }
 
     public void StartClient()
     {
+        OnTryingToJoinGame?.Invoke(this, EventArgs.Empty);
+
+        NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
         NetworkManager.Singleton.StartClient();
     }
 
@@ -103,5 +116,9 @@ public class GameManagerMultiplayer : NetworkBehaviour
         KitchenObject kitchenObject = kitchenObjectNetworkObject.GetComponent<KitchenObject>();
 
         kitchenObject.ClearKitchenObjectFromParent();
+    }
+    private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
+    {
+        FailedToJoinGame?.Invoke(this, EventArgs.Empty);
     }
 }
