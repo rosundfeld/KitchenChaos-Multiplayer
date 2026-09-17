@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentVersion: 1.01
   subtype: kitchenchaos
-  lastShownTimestamp: 1789385334
+  lastShownTimestamp: 1789497943
   lastUpdateResponse:
     version: 1.01
     versionUrl: https://unitycodemonkey.com
-  checkedLastUpdateTimestamp: 1789385334
+  checkedLastUpdateTimestamp: 1789497943
   lastQOTDResponse:
     questionId: 342
     questionText: 'What is the result of this code:
@@ -32,22 +32,24 @@ MonoBehaviour:
     answerC: money == 0
     answerD: 
     answerE: 
-  lastQotdTimestamp: 1789385334
+  lastQotdTimestamp: 1789497943
   lastDynamicHeaderResponse:
-    topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/humbleSep26Maksym.png
-    topText: AWESOME Characters and Weapons 98% OFF! (Modern, Medieval, Fantasy,
-      Sci-Fi, etc)
-    topLink: humblebundle
+    topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/codeMonkeyToolkit50Off.png
+    topText: My Toolkit is 50% OFF! 50+ Tools and Elements to help you make games
+      BETTER and FASTER!
+    topLink: toolkit
     bottomText: Escape Tutorial Hell and level up your skills, try my Practice Lab
       for FREE!
     bottomLink: practicelab
-  lastDynamicHeaderTimestamp: 1789385334
+  lastDynamicHeaderTimestamp: 1789497943
   websiteLatestMessage:
     text: <a href="https://cmonkey.co/freecourses">Check out all my FREE courses!
       Click here!</a>
-  websiteLatestMessageTimestamp: 1789385334
+  websiteLatestMessageTimestamp: 1789497943
   websiteLatestVideos:
     videos:
+    - youTubeId: Wp9I5WhT2OE
+      title: Every Game you make should make your NEXT Game Easier!
     - youTubeId: QNXgOuo7-Iw
       title: TOP 10 FREE NEW Assets SEPTEMBER 2026!
     - youTubeId: xhOkkGbL3mY
@@ -55,6 +57,4 @@ MonoBehaviour:
         Tutorial)
     - youTubeId: HOm1VQLKhX8
       title: Unity 6.6 is here and it has 3 MASSIVE IMPROVEMENTS!
-    - youTubeId: 8xj9IEFRgKo
-      title: THIS is how you go from BEGINNER to ADVANCED!
-  websiteLatestVideosTimestamp: 1789385334
+  websiteLatestVideosTimestamp: 1789497943
