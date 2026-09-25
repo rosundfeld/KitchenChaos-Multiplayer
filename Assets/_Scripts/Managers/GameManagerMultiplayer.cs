@@ -4,10 +4,12 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
 using System;
+using Unity.Services.Authentication;
 
 public class GameManagerMultiplayer : NetworkBehaviour
 {
-    private const int MAX_PLAYER_AMOUNT = 4;
+    public const int MAX_PLAYER_AMOUNT = 4;
+    public const string PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER = "PlayerNameMultiplayer";
     //---------------SINGLETON NETCODE-----------------
     public static GameManagerMultiplayer Instance { get; private set; }
 
@@ -16,6 +18,7 @@ public class GameManagerMultiplayer : NetworkBehaviour
     [SerializeField] private List<Color> playerColorList;
 
     private NetworkList<PlayerData> playerDataNetworkList;
+    private string playerName;
 
     //---------------EVENTS-----------------
     public event EventHandler OnTryingToJoinGame;
@@ -27,10 +30,22 @@ public class GameManagerMultiplayer : NetworkBehaviour
     {
         Instance = this;
 
+        playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(100, 999));
         playerDataNetworkList = new NetworkList<PlayerData>();
         playerDataNetworkList.OnListChanged += PlayerDataNetworkList_OnListChanged;
 
         DontDestroyOnLoad(gameObject);
+    }
+
+    public string GetPlayerName()
+    {
+        return playerName;
+    }
+
+    public void SetPlayerName(string playerName)
+    {
+        this.playerName = playerName;
+        PlayerPrefs.SetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, playerName);
     }
 
 
@@ -135,6 +150,8 @@ public class GameManagerMultiplayer : NetworkBehaviour
             clientId = clientId,
             colorId = GetFirstUnusedColorId()
         });
+        SetPlayerNameServerRpc(GetPlayerName());
+        SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
     }
 
     private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
@@ -159,7 +176,48 @@ public class GameManagerMultiplayer : NetworkBehaviour
         OnTryingToJoinGame?.Invoke(this, EventArgs.Empty);
 
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Client_OnClientDisconnectCallback;
+        NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_Client_OnClientConnectedCallback;
         NetworkManager.Singleton.StartClient();
+    }
+
+    private void NetworkManager_Client_OnClientConnectedCallback(ulong clientId)
+    {
+        SetPlayerNameServerRpc(GetPlayerName());
+        SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetPlayerNameServerRpc(string playerName, ServerRpcParams serverRpcParams = default)
+    {
+        int playerDataIndex = GetPlayerDataIndexFromClientID(serverRpcParams.Receive.SenderClientId);
+        if (playerDataIndex == -1)
+        {
+            //Player not found
+            return;
+        }
+
+        //Ele nao te deixa atualizar direto no Dicionário, vc tem que instanciar o PLayerData e dps modificar e inserir
+        PlayerData playerdata = playerDataNetworkList[playerDataIndex];
+        playerdata.playerName = playerName;
+
+        playerDataNetworkList[playerDataIndex] = playerdata;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetPlayerIdServerRpc(string playerId, ServerRpcParams serverRpcParams = default)
+    {
+        int playerDataIndex = GetPlayerDataIndexFromClientID(serverRpcParams.Receive.SenderClientId);
+        if (playerDataIndex == -1)
+        {
+            //Player not found
+            return;
+        }
+
+        //Ele nao te deixa atualizar direto no Dicionário, vc tem que instanciar o PLayerData e dps modificar e inserir
+        PlayerData playerdata = playerDataNetworkList[playerDataIndex];
+        playerdata.playerId = playerId;
+
+        playerDataNetworkList[playerDataIndex] = playerdata;
     }
 
     public int GetKitchenObjectSOIndex(KitchenObjectSO kitchenObjectSO)

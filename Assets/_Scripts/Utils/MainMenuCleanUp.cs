@@ -16,5 +16,10 @@ public class MainMenuCleanUp : MonoBehaviour
         {
             Destroy(GameManagerMultiplayer.Instance.gameObject);
         }
+
+        if(KitchenGameLobby.Instance != null)
+        {
+            Destroy(KitchenGameLobby.Instance.gameObject);
+        }
     }
 }
